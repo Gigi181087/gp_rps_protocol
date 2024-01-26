@@ -23,7 +23,7 @@ typedef enum {
 } gp__rps_protocol__module_type_t;
 
 
-uint8_t gp__rps_protocol__init_module(gp__rps_protocol__t** module, uint16_t own_id, gp__rps_protocol__module_type_t module_type);
+uint8_t gp__rps_protocol__init_module(gp__rps_protocol__t** module, uint16_t own_id, gp__rps_protocol__module_type_t module_type, uint8_t (*send_message_function)(uint8_t*, uint16_t));
 
 uint8_t gp__rps_protocol__destroy_module(gp__rps_protocol__t** module);
 

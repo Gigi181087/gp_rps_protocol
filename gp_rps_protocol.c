@@ -51,7 +51,16 @@ typedef struct {
 static uint8_t send_message(gp__rps_protocol__t* module, message_t* message);
 static uint8_t process_message(gp__rps_protocol__t* module, message_t* message, uint8_t rssi_param);
 
-uint8_t gp__rps_protocol__init(gp__rps_protocol__t** module_param, uint16_t own_id_param, gp__rps_protocol__module_type_t module_type_param) {
+uint8_t gp__rps_protocol__init(gp__rps_protocol__t** module_param, uint16_t own_id_param, gp__rps_protocol__module_type_t module_type_param, uint8_t(*send_message_param)(uint8_t*, uint16_t)) {
+  uint8_t result;
+
+  if ((*module_param = (gp__rps_protocol__t*)malloc(sizeof(gp__rps_protocol__t))) == NULL) {
+
+    return GP__RPS_PROTOCOL__ERRORS__ALLOC_FAILED;
+  }
+  (*module_param)->send_message = send_message_param;
+  (*module_param)->own_id = own_id_param;
+  (*module_param)->module_type = module_type_param;
 
   return GP__RPS_PROTOCOL__ERRORS__NO_ERROR;
 }
@@ -62,6 +71,7 @@ uint8_t gp__rps_protocol__destroy(gp__rps_protocol__t** module_param) {
 
   return GP__RPS_PROTOCOL__ERRORS__NO_ERROR;
 }
+
 
 uint8_t gp__rps_protocol__handle(gp__rps_protocol__t* module_param, uint64_t system_time_param) {
 
